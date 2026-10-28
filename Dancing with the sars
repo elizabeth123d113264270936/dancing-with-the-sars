@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dancing with the SARs | NASA Space Apps</title>
+<style>
+:root {
+  --bg: #06101f;
+  --panel: #10233c;
+  --cyan: #62e8ff;
+  --purple: #a58bff;
+  --text: #eef6ff;
+  --muted: #a8bbd2;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at top, #17294b, var(--bg) 65%);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+header {
+  position: sticky;
+  top: 0;
+  background: #06101fee;
+  padding: 18px 7%;
+  border-bottom: 1px solid #27415f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  z-index: 10;
+}
+.logo { font-weight: bold; }
+.logo span, h1 span { color: var(--cyan); }
+nav { display: flex; gap: 18px; flex-wrap: wrap; }
+nav a { color: var(--muted); text-decoration: none; }
+nav a:hover { color: white; }
+.hero {
+  max-width: 1150px;
+  margin: auto;
+  padding: 85px 24px;
+  min-height: 580px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 35px;
+}
+.eyebrow {
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: .8rem;
+  font-weight: bold;
+}
+h1 { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; }
+p { color: var(--muted); }
+.hero p { font-size: 1.15rem; }
+button, .btn {
+  display: inline-block;
+  background: linear-gradient(110deg, var(--cyan), var(--purple));
+  color: #06101f;
+  border: 0;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 5px 5px 5px 0;
+}
+.btn.secondary {
+  background: #10233c;
+  border: 1px solid #27415f;
+  color: white;
+}
+.planet {
+  width: min(70vw, 300px);
+  aspect-ratio: 1;
+  margin: auto;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 35% 30%, #63e8ff, #17629c 40%, #06101f 75%);
+  box-shadow: 0 0 65px #62e8ff55;
+  position: relative;
+  animation: float 5s ease-in-out infinite;
+}
+.planet::before {
+  content: "🌎";
+  font-size: 8rem;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.orbit {
+  position: absolute;
+  inset: -18px;
+  border: 1px solid #62e8ff88;
+  border-radius: 50%;
+  animation: spin 12s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-12px); } }
+section { padding: 65px 7%; scroll-margin-top: 85px; }
+.section-head { max-width: 760px; margin: 0 auto 30px; }
+.grid {
+  max-width: 1150px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.card, .panel {
+  background: linear-gradient(145deg, #10233c, #091729);
+  border: 1px solid #27415f;
+  border-radius: 18px;
+  padding: 24px;
+}
+.card { transition: .25s; }
+.card:hover { transform: translateY(-5px); border-color: var(--cyan); }
+.card .emoji { font-size: 2.7rem; }
+.card h3 { letter-spacing: 1px; }
+.info {
+  display: none;
+  margin-top: 15px;
+  padding: 15px;
+  background: #06101f;
+  border-radius: 12px;
+}
+.info.show { display: block; }
+.two {
+  max-width: 1150px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.bar-chart {
+  height: 160px;
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  padding: 15px;
+  background: #06101f;
+  border-radius: 12px;
+}
+.bar {
+  flex: 1;
+  height: var(--height);
+  background: linear-gradient(var(--cyan), var(--purple));
+  border-radius: 6px 6px 0 0;
+  transition: height .3s;
+}
+select {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  background: #06101f;
+  color: white;
+  border: 1px solid #27415f;
+}
+.note {
+  border-left: 3px solid var(--purple);
+  padding: 12px;
+  background: #091729;
+  font-size: .9rem;
+}
+footer {
+  padding: 30px;
+  text-align: center;
+  border-top: 1px solid #27415f;
+}
+@media(max-width: 800px) {
+  .hero, .two { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+  .hero { padding-top: 50px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">DANCING <span>WITH THE SARs</span></div>
+  <nav>
+    <a href="#mission">Mission</a>
+    <a href="#explore">Explore Earth</a>
+    <a href="#radar">SAR Science</a>
+    <a href="#lab">Data Lab</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero" id="home">
+    <div>
+      <div class="eyebrow">NASA Space Apps Challenge</div>
+      <h1>Our planet is <span>always moving.</span></h1>
+      <p>Discover how radar satellites help scientists observe changing forests, shifting ground, and moving glaciers—even through clouds and in darkness.</p>
+      <a class="btn" href="#explore">Explore Earth ↓</a>
+      <a class="btn secondary" href="#radar">How SAR works</a>
+    </div>
+    <div class="planet"><div class="orbit"></div></div>
+  </div>
+
+  <section id="mission">
+    <div class="section-head">
+      <div class="eyebrow">The mission</div>
+      <h2>Seeing Earth in a new way</h2>
+      <p>NISAR is a joint mission of NASA and the Indian Space Research Organisation (ISRO). It uses radar to study changes in Earth's land, ice, and ecosystems.</p>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h3>🌐 Why radar?</h3>
+        <p>Synthetic Aperture Radar (SAR) sends microwave signals toward Earth and measures the echoes that return. Radar can collect observations day and night and often through clouds.</p>
+      </div>
+      <div class="panel">
+        <h3>🔬 What can it reveal?</h3>
+        <p>Scientists compare observations over time to investigate changes in forests, movement of Earth's surface, and ice dynamics.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="explore">
+    <div class="section-head">
+      <div class="eyebrow">Explore Earth</div>
+      <h2>Three worlds, one powerful tool</h2>
+      <p>Select a topic to learn how radar observations help researchers investigate our changing planet.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="emoji">🌲</div>
+        <h3>FORESTS</h3>
+        <p>Radar can help researchers study forest structure and monitor changes in vegetation across large areas.</p>
+        <button onclick="showTopic('forest')">Explore forests ↗</button>
+      </article>
+      <article class="card">
+        <div class="emoji">🌎</div>
+        <h3>EARTHQUAKES</h3>
+        <p>Comparing radar observations can help scientists measure ground deformation associated with some earthquakes.</p>
+        <button onclick="showTopic('earthquake')">Explore earthquakes ↗</button>
+      </article>
+      <article class="card">
+        <div class="emoji">🧊</div>
+        <h3>GLACIERS</h3>
+        <p>Radar observations can help researchers study glacier movement and changing ice-covered regions.</p>
+        <button onclick="showTopic('glacier')">Explore glaciers ↗</button>
+      </article>
+    </div>
+    <div class="panel info" id="topic-info" aria-live="polite">
+      <h3 id="topic-title"></h3>
+      <p id="topic-text"></p>
+    </div>
+  </section>
+
+  <section id="radar">
+    <div class="section-head">
+      <div class="eyebrow">The science</div>
+      <h2>How SAR works</h2>
+      <p>SAR stands for Synthetic Aperture Radar. It uses radar measurements collected as a satellite moves to create detailed images of Earth's surface.</p>
+    </div>
+    <div class="two">
+      <div class="panel">
+        <h3>📡 A radar signal's journey</h3>
+        <p><strong>1. Send:</strong> A satellite transmits microwave energy toward Earth.</p>
+        <p><strong>2. Receive:</strong> The surface reflects some of the signal back.</p>
+        <p><strong>3. Analyze:</strong> Scientists process the echoes to study surface properties and changes.</p>
+      </div>
+      <div class="panel">
+        <h3>✨ Why it matters</h3>
+        <p>Radar can observe remote areas in darkness and often through clouds, helping scientists study changes over time.</p>
+        <p class="note">Radar measurements can help study earthquake-related ground movement. They do not predict exactly when an earthquake will occur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="lab">
+    <div class="section-head">
+      <div class="eyebrow">Interactive data lab</div>
+      <h2>Compare a sample signal</h2>
+      <p>Choose a landscape and observation to update this educational demonstration.</p>
+    </div>
+    <div class="panel">
+      <label for="landscape">Landscape:</label>
+      <select id="landscape">
+        <option value="forest">Forest</option>
+        <option value="ground">Ground movement</option>
+        <option value="ice">Glacier / ice</option>
+      </select>
+      <label for="observation">Sample:</label>
+      <select id="observation">
+        <option value="a">Observation A</option>
+        <option value="b">Observation B</option>
+      </select>
+      <button onclick="updateChart()">Compare samples</button>
+      <div class="bar-chart" id="chart">
+        <div class="bar" style="--height:35%"></div>
+        <div class="bar" style="--height:65%"></div>
+        <div class="bar" style="--height:48%"></div>
+        <div class="bar" style="--height:78%"></div>
+        <div class="bar" style="--height:55%"></div>
+        <div class="bar" style="--height:42%"></div>
+        <div class="bar" style="--height:70%"></div>
+        <div class="bar" style="--height:50%"></div>
+      </div>
+      <p id="chart-caption">Forest · Observation A</p>
+      <p class="note">This chart uses simulated example values, not live measurements from NASA, ISRO, or NISAR.</p>
+    </div>
+  </section>
+
+  <section id="learn">
+    <div class="section-head">
+      <div class="eyebrow">Keep exploring</div>
+      <h2>Learn from mission scientists</h2>
+      <p>Visit the official mission page to learn more about the NISAR mission, its instruments, and scientific goals.</p>
+      <a class="btn" href="https://science.nasa.gov/mission/nisar/" target="_blank" rel="noopener noreferrer">Visit NASA NISAR ↗</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Dancing with the SARs · Student educational project<br>
+  Made for NASA Space Apps Challenge · Not an official NASA website
+</footer>
+
+<script>
+const topics = {
+  forest: {
+    title: "🌲 FORESTS — observing living landscapes",
+    text: "Radar signals interact with branches, trunks, leaves, and the ground. Researchers can use repeated observations to study forest structure and changes in vegetation."
+  },
+  earthquake: {
+    title: "🌎 EARTHQUAKES — measuring ground movement",
+    text: "Scientists can compare radar images using a method called InSAR. The patterns can reveal ground deformation associated with some earthquakes, but they cannot predict the exact time of a future earthquake."
+  },
+  glacier: {
+    title: "🧊 GLACIERS — tracking ice in motion",
+    text: "Radar observations can help scientists study glacier movement and changes in ice-covered regions, including areas where clouds or darkness limit optical observations."
+  }
+};
+
+function showTopic(topic) {
+  document.getElementById("topic-title").textContent = topics[topic].title;
+  document.getElementById("topic-text").textContent = topics[topic].text;
+  document.getElementById("topic-info").classList.add("show");
+  document.getElementById("topic-info").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+const samples = {
+  forest: {a:[35,65,48,78,55,42,70,50],b:[52,45,74,58,38,81,49,66]},
+  ground: {a:[30,42,38,47,40,51,36,44],b:[65,28,72,33,60,25,69,39]},
+  ice: {a:[72,67,75,62,70,64,78,68],b:[48,59,41,66,45,55,39,61]}
+};
+const names = {
+  forest:"Forest",
+  ground:"Ground movement",
+  ice:"Glacier / ice"
+};
+https://github.com/elizabeth123d113264270936/dancing-with-the-sars/tree/main
+function updateChart() {
+  const land = document.getElementById("landscape").value;
+  const observation = document.getElementById("observation").value;
+  const values = samples[land][observation];
+  document.querySelectorAll(".bar").forEach((bar,i) => {
+    bar.style.setProperty("--height", values[i] + "%");
+  });
+  document.getElementById("chart-caption").textContent =
+    names[land] + " · " +
+    (observation === "a" ? "Observation A" : "Observation B") +
+    " — simulated example values.";
+}
+document.getElementById("landscape").addEventListener("change", updateChart);
+document.getElementById("observation").addEventListener("change", updateChart);
+</script>
+</body>
+</html>
